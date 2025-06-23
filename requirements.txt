@@ -1,0 +1,5 @@
+ecdsa>=0.18.0
+base58>=2.1.1
+bech32>=1.2.0
+ipykernel>=6.29.0 
+bitcoinrpc>=2.0.0
