@@ -36,6 +36,46 @@ Simple Bitcoin cryptography implementation that generates BTC addresses from scr
    - `main.ipynb` - Generate Bitcoin addresses
    - `send.ipynb` - Send transactions (requires Bitcoin Core)
 
+## Importing Addresses to Bitcoin Core
+
+After generating addresses, you can import them to Bitcoin Core to monitor transactions:
+
+1. **Get descriptor info** - Open Bitcoin Core console and run:
+   ```
+   getdescriptorinfo "combo(WIF)"
+   ```
+   Example:
+   ```
+   getdescriptorinfo "combo(Kz6dh8Ny4HuCDrWEsyBZsUUjz16ab1hmgR5ihvKFx7wGGFibe7Cc)"
+   ```
+   
+   Response:
+   ```json
+   {
+     "descriptor": "combo(02ffd6ef90a5bb4ca138aaad516560aa80157ae0629a27099660dfd5039bc3fa2b)#l3la8e8y",
+     "checksum": "04fk0myz",
+     "isrange": false,
+     "issolvable": true,
+     "hasprivatekeys": true
+   }
+   ```
+
+2. **Import the descriptor** - Use the descriptor with checksum:
+   ```
+   importdescriptors '[{"desc": "combo(WIF)#DESCRIPTOR", "timestamp": "now"}]'
+   ```
+   Example:
+   ```
+   importdescriptors '[{"desc": "combo(02ffd6ef90a5bb4ca138aaad516560aa80157ae0629a27099660dfd5039bc3fa2b)#l3la8e8y", "timestamp": "now"}]'
+   ```
+
+**Note:** The `timestamp` parameter determines when to start scanning for transactions:
+- `"now"` - Only scan for new transactions from current time
+- `0` - Scan from the beginning of the blockchain (full rescan)
+- Unix timestamp - Scan from a specific date (e.g., `1640995200` for Jan 1, 2022)
+
+The descriptor format includes the checksum after the `#` symbol for verification.
+
 ## Dependencies
 
 - `ecdsa` - Elliptic curve cryptography
